@@ -14,7 +14,7 @@ export const Home: FC = () => {
         </Allotment.Pane>
 
         {/* preview */}
-        <Allotment.Pane minSize={0}>
+        <Allotment.Pane minSize={600}>
           <Preview />
         </Allotment.Pane>
       </Allotment>
