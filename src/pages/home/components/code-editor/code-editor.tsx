@@ -3,6 +3,20 @@ import * as monaco from "monaco-editor";
 
 import { ata } from "./utils";
 
+const EDITOR_OPTIONS: monaco.editor.IStandaloneEditorConstructionOptions = {
+  minimap: {
+    enabled: false,
+  },
+  fontSize: 13,
+  fontFamily: '"Fira Code", "Dank Mono", "JetBrains Mono", monospace',
+  fontWeight: "500",
+  scrollbar: {
+    verticalScrollbarSize: 3,
+    horizontalScrollbarSize: 3,
+  },
+  scrollBeyondLastLine: false,
+};
+
 export const CodeEditor = () => {
   // Test Code
   const code = `const App = () => {
@@ -20,11 +34,15 @@ export default App;`;
 
     // Format code on save
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyL, () => {
-      editor.getAction("editor.action.formatDocument")?.run();
+      const editorFormatDocumentAction = editor.getAction(
+        "editor.action.formatDocument"
+      );
+
+      editorFormatDocumentAction && editorFormatDocumentAction.run();
     });
 
     // Introduce the downloaded dependency package to the editor.
-    const overrideATA = ata((code, path) => {
+    const overrideATA = ata((code: string, path: string) => {
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         code,
         `file://${path}`
@@ -52,18 +70,4 @@ export default App;`;
       />
     </div>
   );
-};
-
-const EDITOR_OPTIONS: monaco.editor.IStandaloneEditorConstructionOptions = {
-  minimap: {
-    enabled: false,
-  },
-  fontSize: 13,
-  fontFamily: '"Fira Code", "Dank Mono", "JetBrains Mono", monospace',
-  fontWeight: "500",
-  scrollbar: {
-    verticalScrollbarSize: 3,
-    horizontalScrollbarSize: 3,
-  },
-  scrollBeyondLastLine: false,
 };
