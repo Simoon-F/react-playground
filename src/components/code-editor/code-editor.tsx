@@ -1,7 +1,10 @@
 import MonacoEditor, { OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
+import { memo } from "react";
 
-import { ata } from "./utils";
+import { type IFile } from "@/stores/playground-store";
+
+import { useStore } from "./use-store";
 
 const EDITOR_OPTIONS: monaco.editor.IStandaloneEditorConstructionOptions = {
   minimap: {
@@ -17,13 +20,8 @@ const EDITOR_OPTIONS: monaco.editor.IStandaloneEditorConstructionOptions = {
   scrollBeyondLastLine: false,
 };
 
-export const CodeEditor = () => {
-  // Test Code
-  const code = `const App = () => {
-  return <div>Hello World</div>;
-};
-
-export default App;`;
+export const CodeEditor = memo(({ file }: { file: IFile }) => {
+  const { ata } = useStore();
 
   const handleMount: OnMount = (editor, monaco) => {
     // Set compiler options
@@ -42,7 +40,7 @@ export default App;`;
     });
 
     // Introduce the downloaded dependency package to the editor.
-    const overrideATA = ata((code: string, path: string) => {
+    const importDependencyPackage = ata((code: string, path: string) => {
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         code,
         `file://${path}`
@@ -51,23 +49,23 @@ export default App;`;
 
     // Update the dependency package when the editor content changes.
     editor.onDidChangeModelContent(() => {
-      overrideATA(editor.getValue());
+      importDependencyPackage(editor.getValue());
     });
 
     // Init the dependency package.
-    overrideATA(editor.getValue());
+    importDependencyPackage(editor.getValue());
   };
 
   return (
     <div>
       <MonacoEditor
-        path={"index.tsx"}
-        value={code}
+        path={file.name}
+        value={file.value}
+        language={file.language}
         onMount={handleMount}
         options={EDITOR_OPTIONS}
-        language={"typescript"}
         className={"h-screen"}
       />
     </div>
   );
-};
+});
