@@ -1,4 +1,4 @@
-import { GetSuffixLanguageInFileName } from "@/utils";
+import { determineLanguageFromFileName } from "@/utils";
 import { create } from "zustand";
 import AppCss from "@/components/template/app.css?raw";
 import App from "@/components/template/app.tsx?raw";
@@ -57,7 +57,7 @@ export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
         [fileName]: {
           name: fileName,
           value: "",
-          language: GetSuffixLanguageInFileName(fileName),
+          language: determineLanguageFromFileName(fileName),
         },
       },
     })),
@@ -86,7 +86,7 @@ export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
     const newFile = {
       [newFieldName]: {
         ...value,
-        language: GetSuffixLanguageInFileName(newFieldName),
+        language: determineLanguageFromFileName(newFieldName),
         name: newFieldName,
       },
     };

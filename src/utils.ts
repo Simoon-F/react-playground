@@ -1,19 +1,20 @@
 /**
- * Get Suffix Language in File Name
+ * Determine the Programming Language Based on File Suffix
  *
- * @param fileName
- * @returns
+ * @param fileName - The name of the file
+ * @returns {string} - The programming language associated with the file suffix
  */
-export const GetSuffixLanguageInFileName = (fileName: string) => {
+export const determineLanguageFromFileName = (fileName: string): string => {
   const suffix = fileName.split(".").pop() || "";
 
-  if (["js", "jsx"].includes(suffix)) return "javascript";
+  const languageMap: { [key: string]: string } = {
+    js: "javascript",
+    jsx: "javascript",
+    ts: "typescript",
+    tsx: "typescript",
+    json: "json",
+    css: "css",
+  };
 
-  if (["ts", "tsx"].includes(suffix)) return "typescript";
-
-  if (["json"].includes(suffix)) return "json";
-
-  if (["css"].includes(suffix)) return "css";
-
-  return "javascript";
+  return languageMap[suffix] || "javascript";
 };
