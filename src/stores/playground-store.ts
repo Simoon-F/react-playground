@@ -70,28 +70,22 @@ export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
     set({ files: state.files });
   },
   selectedFileName: "app.tsx",
-  updateFileName: (oldFieldName, newFieldName) => {
+  updateFileName: (oldFileName, newFileName) => {
     const state = get();
 
-    if (
-      !state.files[oldFieldName] ||
-      newFieldName === undefined ||
-      newFieldName === null
-    ) {
-      return;
-    }
+    if (!state.files[oldFileName] || !newFileName) return;
 
-    const { [oldFieldName]: value, ...rest } = state.files;
+    const { [oldFileName]: file, ...remainingFiles } = state.files;
 
-    const newFile = {
-      [newFieldName]: {
-        ...value,
-        language: determineLanguageFromFileName(newFieldName),
-        name: newFieldName,
+    const updatedFile = {
+      [newFileName]: {
+        ...file,
+        name: newFileName,
+        language: determineLanguageFromFileName(newFileName),
       },
     };
 
-    set({ files: { ...rest, ...newFile } });
+    set({ files: { ...remainingFiles, ...updatedFile } });
   },
   setSelectedFileName: (fileName) => set({ selectedFileName: fileName }),
 }));
