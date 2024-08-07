@@ -20,52 +20,55 @@ const EDITOR_OPTIONS: monaco.editor.IStandaloneEditorConstructionOptions = {
   scrollBeyondLastLine: false,
 };
 
-export const CodeEditor = memo(({ file }: { file: IFile }) => {
-  const { ata } = useStore();
+export const CodeEditor = memo(
+  ({ file, onChange }: { file: IFile; onChange: (value?: string) => void }) => {
+    const { ata } = useStore();
 
-  const handleMount: OnMount = (editor, monaco) => {
-    // Set compiler options
-    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-      jsx: monaco.languages.typescript.JsxEmit.Preserve,
-      esModuleInterop: true,
-    });
+    const handleMount: OnMount = (editor, monaco) => {
+      // Set compiler options
+      monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+        jsx: monaco.languages.typescript.JsxEmit.Preserve,
+        esModuleInterop: true,
+      });
 
-    // Format code on save
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyL, () => {
-      const editorFormatDocumentAction = editor.getAction(
-        "editor.action.formatDocument"
-      );
+      // Format code on save
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyL, () => {
+        const editorFormatDocumentAction = editor.getAction(
+          "editor.action.formatDocument"
+        );
 
-      editorFormatDocumentAction && editorFormatDocumentAction.run();
-    });
+        editorFormatDocumentAction && editorFormatDocumentAction.run();
+      });
 
-    // Introduce the downloaded dependency package to the editor.
-    const importDependencyPackage = ata((code: string, path: string) => {
-      monaco.languages.typescript.typescriptDefaults.addExtraLib(
-        code,
-        `file://${path}`
-      );
-    });
+      // Introduce the downloaded dependency package to the editor.
+      const importDependencyPackage = ata((code: string, path: string) => {
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(
+          code,
+          `file://${path}`
+        );
+      });
 
-    // Update the dependency package when the editor content changes.
-    editor.onDidChangeModelContent(() => {
+      // Update the dependency package when the editor content changes.
+      editor.onDidChangeModelContent(() => {
+        importDependencyPackage(editor.getValue());
+      });
+
+      // Init the dependency package.
       importDependencyPackage(editor.getValue());
-    });
+    };
 
-    // Init the dependency package.
-    importDependencyPackage(editor.getValue());
-  };
-
-  return (
-    <div>
-      <MonacoEditor
-        path={file.name}
-        value={file.value}
-        language={file.codeLanguage}
-        onMount={handleMount}
-        options={EDITOR_OPTIONS}
-        className={"h-screen"}
-      />
-    </div>
-  );
-});
+    return (
+      <div>
+        <MonacoEditor
+          path={file.name}
+          value={file.value}
+          language={file.codeLanguage}
+          onMount={handleMount}
+          options={EDITOR_OPTIONS}
+          className={"h-screen"}
+          onChange={onChange}
+        />
+      </div>
+    );
+  }
+);

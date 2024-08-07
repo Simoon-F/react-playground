@@ -8,7 +8,7 @@ import { Preview } from "@/components/preview/preview";
 import { useStore } from "./use-store";
 
 export const Home: FC = () => {
-  const { file } = useStore();
+  const { file, handleMonacoEditorChange } = useStore();
 
   return (
     <div className="h-screen">
@@ -16,7 +16,8 @@ export const Home: FC = () => {
         {/* code */}
         <Allotment.Pane minSize={600}>
           <FileNameList />
-          <CodeEditor file={file} />
+
+          <CodeEditor file={file} onChange={handleMonacoEditorChange} />
         </Allotment.Pane>
 
         {/* preview */}
