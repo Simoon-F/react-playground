@@ -9,7 +9,7 @@ import { determineLanguageFromFileName } from "@/utils";
 export interface IFile {
   name: string;
   value: string;
-  language: string;
+  codeLanguage: string;
 }
 
 export interface IFiles {
@@ -30,22 +30,22 @@ const DEFAULT_FILES: IFiles = {
   "main.tsx": {
     name: "main.tsx",
     value: main,
-    language: "typescript",
+    codeLanguage: "typescript",
   },
   "app.tsx": {
     name: "app.tsx",
     value: App,
-    language: "typescript",
+    codeLanguage: "typescript",
   },
   "app.css": {
     name: "app.css",
     value: AppCss,
-    language: "css",
+    codeLanguage: "css",
   },
   "import-map.json": {
     name: "import-map.json",
     value: importMap,
-    language: "json",
+    codeLanguage: "json",
   },
 };
 
@@ -59,7 +59,7 @@ export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
         [fileName]: {
           name: fileName,
           value: "",
-          language: determineLanguageFromFileName(fileName),
+          codeLanguage: determineLanguageFromFileName(fileName),
         },
       },
     }));
@@ -83,7 +83,7 @@ export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
       [newFileName]: {
         ...file,
         name: newFileName,
-        language: determineLanguageFromFileName(newFileName),
+        codeLanguage: determineLanguageFromFileName(newFileName),
       },
     };
 

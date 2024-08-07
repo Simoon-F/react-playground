@@ -1,0 +1,17 @@
+.tabs {
+  @apply flex items-center h-[38px] overflow-x-auto overflow-y-hidden
+  border-b-[1px] border-solid border-b-[#ddd] box-border text-[#444] bg-white;
+
+  .tab-item {
+    @apply flex-initial pt-[8px] pb-[6px] px-[10px] text-[14px] font-medium leading-[20px] cursor-pointer items-center
+    border-b-[3px] border-solid border-transparent;
+
+    &.actived {
+      @apply text-[#255cff] border-b-[#255cff];
+    }
+
+    &:first-child {
+      @apply cursor-text;
+    }
+  }
+}

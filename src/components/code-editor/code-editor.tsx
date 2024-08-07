@@ -61,7 +61,7 @@ export const CodeEditor = memo(({ file }: { file: IFile }) => {
       <MonacoEditor
         path={file.name}
         value={file.value}
-        language={file.language}
+        language={file.codeLanguage}
         onMount={handleMount}
         options={EDITOR_OPTIONS}
         className={"h-screen"}

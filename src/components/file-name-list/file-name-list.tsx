@@ -1,30 +1,22 @@
-import { useEffect, useState } from "react";
-import { useShallow } from "zustand/react/shallow";
+import classnames from "classnames";
 
-import { playgroundStore } from "@/stores/playground-store";
+import styles from "./styles.module.css";
+import { useStore } from "./use-store";
 
 export const FileNameList = () => {
-  const { files, addFile, removeFile, updateFileName, setSelectedFileName } =
-    playgroundStore(
-      useShallow((state) => ({
-        files: state.files,
-        addFile: state.addFile,
-        removeFile: state.removeFile,
-        updateFileName: state.updateFileName,
-        setSelectedFileName: state.setSelectedFileName,
-      }))
-    );
-
-  const [tabs, setTabs] = useState<string[]>([""]);
-
-  useEffect(() => {
-    setTabs(Object.keys(files));
-  }, [files]);
+  const { tabs, handleFileSwitch, selectedFileName } = useStore();
 
   return (
-    <div>
+    <div className={styles.tabs}>
       {tabs.map((item, index) => (
-        <div key={`tab_${index}`} onClick={() => setSelectedFileName(item)}>
+        <div
+          key={`tab_${index}`}
+          onClick={() => handleFileSwitch(item)}
+          className={classnames(
+            styles["tab-item"],
+            selectedFileName === item ? styles.actived : null
+          )}
+        >
           {item}
         </div>
       ))}
