@@ -1,4 +1,5 @@
 import { Allotment } from "allotment";
+import { debounce } from "lodash-es";
 import { FC } from "react";
 
 import { CodeEditor } from "@/components/code-editor/code-editor";
@@ -17,7 +18,10 @@ export const Home: FC = () => {
         <Allotment.Pane minSize={600}>
           <FileNameList />
 
-          <CodeEditor file={file} onChange={handleMonacoEditorChange} />
+          <CodeEditor
+            file={file}
+            onChange={debounce(handleMonacoEditorChange, 500)}
+          />
         </Allotment.Pane>
 
         {/* preview */}
