@@ -1,9 +1,10 @@
-import { determineLanguageFromFileName } from "@/utils";
 import { create } from "zustand";
+
 import AppCss from "@/components/template/app.css?raw";
 import App from "@/components/template/app.tsx?raw";
-import main from "@/components/template/main.tsx?raw";
 import importMap from "@/components/template/import-map.json?raw";
+import main from "@/components/template/main.tsx?raw";
+import { determineLanguageFromFileName } from "@/utils";
 
 export interface IFile {
   name: string;
@@ -50,7 +51,8 @@ const DEFAULT_FILES: IFiles = {
 
 export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
   files: DEFAULT_FILES,
-  addFile: (fileName: string) =>
+  selectedFileName: "app.tsx",
+  addFile: (fileName: string) => {
     set((state) => ({
       files: {
         ...state.files,
@@ -60,7 +62,8 @@ export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
           language: determineLanguageFromFileName(fileName),
         },
       },
-    })),
+    }));
+  },
   setFiles: (files) => set({ files }),
   removeFile: (fileName) => {
     const state = get();
@@ -69,7 +72,6 @@ export const playgroundStore = create<PlaygroundStoreType>((set, get) => ({
 
     set({ files: state.files });
   },
-  selectedFileName: "app.tsx",
   updateFileName: (oldFileName, newFileName) => {
     const state = get();
 
