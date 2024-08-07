@@ -2,6 +2,18 @@
   @apply flex items-center h-[38px] overflow-x-auto overflow-y-hidden
   border-b-[1px] border-solid border-b-[#ddd] box-border text-[#444] bg-white;
 
+  &::-webkit-scrollbar {
+    @apply h-[1px];
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply bg-[#DDD];
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-[#DDD];
+  }
+
   .tab-item {
     @apply flex-initial pt-[8px] pb-[6px] px-[10px] text-[14px] font-medium leading-[20px] cursor-pointer items-center
     border-b-[3px] border-solid border-transparent;
